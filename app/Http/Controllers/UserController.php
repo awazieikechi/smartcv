@@ -30,37 +30,21 @@ class UserController extends Controller
 
     /**
      * @OA\Post(
-     *      path="/api/register",
-     *      operationId="Authentication",
-     *      tags={"User"},
-     *      summary="Register User",
-     *      description="Register User",
-     *   @OA\RequestBody(
+     *     path="/api/user",
+     *     tags={"user"},
+     *     summary="Create user",
+     *     description="This can only be done by the logged in user.",
+     *     operationId="createUser",
+     *     @OA\Response(
+     *         response="default",
+     *         description="successful operation"
+     *     ),
+     *     @OA\RequestBody(
+     *         description="Create user object",
      *         required=true,
-     *         @OA\JsonContent(
-     *required={ "name", "email", "password},
-     *@OA\Property(property="name", type="string", example="john"),
-     * @OA\Property(property="email", type="string", example="john@examle.com"),
-     *  @OA\Property(property="password", type="string", example="john@examle.com"),
-     *         ),
-     *      ),
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful operation",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Invest Bonus has been created successfully!"),
-     *
-     *          )
-     *       ),
-     *      @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *      ),
-     *      @OA\Response(
-     *          response=403,
-     *          description=""
-     *      )
+     *         @OA\JsonContent(ref="#/components/schemas/User")
      *     )
+     * )
      */
 
     public function register(Request $requst)
@@ -91,32 +75,61 @@ class UserController extends Controller
 
     /**
      * @OA\Get(
-     *      path="/api/login",
-     *      operationId="Authentication",
-     *      tags={"User"},
-     *      summary="Login to Resource",
-     *      description="Login to Resource",
-     *   @OA\RequestBody(
+     *     path="/user/login",
+     *     tags={"user"},
+     *     summary="Logs user into system",
+     *     operationId="loginUser",
+     *     @OA\Parameter(
+     *         name="username",
+     *         in="query",
+     *         description="The user name for login",
      *         required=true,
-     *
-     *      ),
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful operation",
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="password",
+     *         in="query",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation",
+     *         @OA\Header(
+     *             header="X-Rate-Limit",
+     *             description="calls per hour allowed by the user",
+     *             @OA\Schema(
+     *                 type="integer",
+     *                 format="int32"
+     *             )
+     *         ),
+     *         @OA\Header(
+     *             header="X-Expires-After",
+     *             description="date in UTC when token expires",
+     *             @OA\Schema(
+     *                 type="string",
+     *                 format="datetime"
+     *             )
+     *         ),
      *         @OA\JsonContent(
-     *             @OA\Property(property="data", type="string", example="true"),
-     *
-     *          )
-     *       ),
-     *      @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *      ),
-     *      @OA\Response(
-     *          response=403,
-     *          description="false"
-     *      )
+     *             type="string"
+     *         ),
+     *         @OA\MediaType(
+     *             mediaType="application/xml",
+     *             @OA\Schema(
+     *                 type="string"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Invalid username/password supplied"
      *     )
+     * )
      */
     public function login(Request $request)
     {
