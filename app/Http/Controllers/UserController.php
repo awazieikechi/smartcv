@@ -28,6 +28,41 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Post(
+     *      path="/api/register",
+     *      operationId="Authentication",
+     *      tags={"User"},
+     *      summary="Register User",
+     *      description="Register User",
+     *   @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *required={ "name", "email", "password},
+     *@OA\Property(property="name", type="string", example="john"),
+     * @OA\Property(property="email", type="string", example="john@examle.com),
+     *  @OA\Property(property="password", type="string", example="john@examle.com),
+     *         ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Invest Bonus has been created successfully!"),
+     *
+     *          )
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description=""
+     *      )
+     *     )
+     */
+
     public function register(Request $requst)
     {
         $validator = $this->validator(request()->all());
@@ -54,6 +89,35 @@ class UserController extends Controller
 
     }
 
+    /**
+     * @OA\Get(
+     *      path="/api/login",
+     *      operationId="Authentication",
+     *      tags={"User"},
+     *      summary="Login to Resource",
+     *      description="Login to Resource",
+     *   @OA\RequestBody(
+     *         required=true,
+     *
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="data", type="string", example="true"),
+     *
+     *          )
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="false"
+     *      )
+     *     )
+     */
     public function login(Request $request)
     {
         $request->validate([
